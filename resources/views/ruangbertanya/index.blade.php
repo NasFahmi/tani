@@ -27,6 +27,14 @@
                     </div>
                 @endif
             @endforeach
+            {{-- loading animation --}}
+            <div id="loading-animation" class="flex items-center justify-center mt-5 h-min" style="display: none;">
+                <div class="flex flex-row gap-2">
+                    <div class="w-4 h-4 bg-blue-700 rounded-full animate-bounce"></div>
+                    <div class="w-4 h-4 rounded-full bg-blue-700 animate-bounce [animation-delay:-.3s]"></div>
+                    <div class="w-4 h-4 rounded-full bg-blue-700 animate-bounce [animation-delay:-.5s]"></div>
+                </div>
+            </div>
             {{-- <div class="mb-2 text-right" id="right-message">
                 <p class="inline-block px-4 py-2 text-white bg-blue-500 rounded-lg">Hello</p>
             </div>
@@ -55,6 +63,7 @@
 
             messageInput.prop('disabled', true);
             $("form button").prop('disabled', true);
+            $("#loading-animation").show();
 
             $.ajax({
                 url: '{{ route('ruang-bertanya.chat') }}',
@@ -79,6 +88,7 @@
             }).fail(function() {
                 alert("Terjadi kesalahan. Silakan coba lagi.");
             }).always(function() {
+                $("#loading-animation").hide();
                 messageInput.prop('disabled', false);
                 $("form button").prop('disabled', false);
             });
