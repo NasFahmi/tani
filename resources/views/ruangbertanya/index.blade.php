@@ -16,17 +16,29 @@
         </div>
         <div id="chatbox" class="h-screen p-4 overflow-y-auto">
             <!-- Chat messages will be displayed here -->
-            <div class="mb-2 text-right" id="right-message">
+            @foreach ($messages as $message)
+                @if ($message->sender == 'user')
+                    <div class="mb-2 text-right">
+                        <p class="inline-block px-4 py-2 text-white bg-blue-500 rounded-lg">{{ $message->content }}</p>
+                    </div>
+                @else
+                    <div class="mb-2">
+                        <p class="inline-block px-4 py-2 text-gray-700 bg-gray-200 rounded-lg">{{ $message->content }}</p>
+                    </div>
+                @endif
+            @endforeach
+            {{-- <div class="mb-2 text-right" id="right-message">
                 <p class="inline-block px-4 py-2 text-white bg-blue-500 rounded-lg">Hello</p>
             </div>
             <div class="mb-2" id="left-message">
                 <p class="inline-block px-4 py-2 text-gray-700 bg-gray-200 rounded-lg">Hi, Saya adalah chatbot, silahkan bertanya apapun disini.</p>
-            </div>
+            </div> --}}
         </div>
     </div>
     <form id="chat-form">
         <div class="flex items-center p-4 mb-4 bg-white rounded-lg shadow-md" style="border-radius: 28px;">
-            <input type="text" id="message" class="flex-grow p-2 bg-transparent border border-gray-300 rounded-md" placeholder="Tulis pesan...">
+            <input type="text" id="message" class="flex-grow p-2 bg-transparent border border-gray-300 rounded-md"
+                placeholder="Tulis pesan...">
             <button type="submit" class="flex items-center justify-center w-12 h-12 ml-4 bg-green-600 rounded-full">
                 <img src="https://img.icons8.com/ios-filled/50/ffffff/paper-plane.png" alt="Send" class="w-6 h-6">
             </button>
@@ -54,9 +66,13 @@
                     "content": message
                 }
             }).done(function(res) {
-                $('#chatbox').append('<div class="mb-2 text-right" id="right-message"><p class="inline-block px-4 py-2 text-white bg-blue-500 rounded-lg">' + message + '</p>'+'</div>');
+                $('#chatbox').append(
+                    '<div class="mb-2 text-right" id="right-message"><p class="inline-block px-4 py-2 text-white bg-blue-500 rounded-lg">' +
+                    message + '</p>' + '</div>');
                 const formattedResponse = marked.parse(res); // Convert markdown to HTML
-                $('#chatbox').append('<div class="mb-2" id="left-message"><div class="inline-block px-4 py-2 text-gray-700 bg-gray-200 rounded-lg">' + formattedResponse + '</div>'+'</div>');
+                $('#chatbox').append(
+                    '<div class="mb-2" id="left-message"><div class="inline-block px-4 py-2 text-gray-700 bg-gray-200 rounded-lg">' +
+                    formattedResponse + '</div>' + '</div>');
 
                 messageInput.val('');
                 $(document).scrollTop($(document).height());

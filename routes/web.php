@@ -15,7 +15,7 @@ Route::post('/register',[AuthenticationController::class,'registration'])->name(
 Route::middleware('auth')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home.index');
     Route::get('/ruang-bertanya', [RuangTanyaController::class, 'index'])->name('ruang-bertanya.index');
-    Route::post('/chat', [RuangTanyaController::class, 'chat'])->name('ruang-bertanya.chat');
+    Route::post('/chat', [RuangTanyaController::class, 'sendMessage'])->name('ruang-bertanya.chat');
 
     Route::get('/cek-kesehatan', [CekKesehatanController::class, 'index'])->name('cek-kesehatan.index');
     Route::post('/upload-photo', [CekKesehatanController::class, 'uploadPhoto'])->name('cek-kesehatan.upload-photo');
