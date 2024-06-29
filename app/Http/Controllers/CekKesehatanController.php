@@ -47,7 +47,7 @@ class CekKesehatanController extends Controller
                         [
                             "parts" => [
                                 [
-                                    "text" => "What is this picture?"
+                                    "text" => "apa yang ada di dalam gambar ini? deskripsikan dengan detail mengenai gambar ini"
                                 ],
                                 [
                                     "inline_data" => [
