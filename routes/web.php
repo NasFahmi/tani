@@ -1,18 +1,25 @@
 <?php
 
+use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\CekKesehatanController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RuangTanyaController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('index');
+Route::get('/login',[AuthenticationController::class, 'loginview'])->name('login');
+Route::post('/login',[AuthenticationController::class,'authentication'])->name('auth.authentication');
+Route::get('/register',[AuthenticationController::class, 'registerview'])->name('register');
+Route::post('/register',[AuthenticationController::class,'registration'])->name('auth.registration');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('home.index');
+    Route::get('/ruang-bertanya', [RuangTanyaController::class, 'index'])->name('ruang-bertanya.index');
+    Route::post('/chat', [RuangTanyaController::class, 'chat'])->name('ruang-bertanya.chat');
+
+    Route::get('/cek-kesehatan', [CekKesehatanController::class, 'index'])->name('cek-kesehatan.index');
+    Route::post('/upload-photo', [CekKesehatanController::class, 'uploadPhoto'])->name('cek-kesehatan.upload-photo');
+    Route::get('/cek-kesehatan/hasil', [CekKesehatanController::class, 'hasil'])->name('cek-kesehatan.hasil')->middleware('isSubmitPhoto');
+
+    Route::get('/profile', [UserController::class, 'index'])->name('profile.index');
 });
-Route::get('/ruang-bertanya',[RuangTanyaController::class, 'index'])->name('ruang-bertanya.index');
-Route::post('/chat',[RuangTanyaController::class,'chat'])->name('ruang-bertanya.chat');
-
-Route::get('/cek-kesehatan',[CekKesehatanController::class, 'index'])->name('cek-kesehatan.index');
-Route::post('/upload-photo', [CekKesehatanController::class, 'uploadPhoto'])->name('cek-kesehatan.upload-photo');
-Route::get('/cek-kesehatan/hasil', [CekKesehatanController::class, 'hasil'])->name('cek-kesehatan.hasil')->middleware('isSubmitPhoto');
-
-Route::get('/profile',[UserController::class, 'index'])->name('profile.index');

@@ -49,4 +49,5 @@ class RuangTanyaController extends Controller
             }
         }
     }
+    
 }
