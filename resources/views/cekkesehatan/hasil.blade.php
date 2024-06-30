@@ -36,8 +36,9 @@
         </div>
         <div id="marked-result" class="mb-4"></div>
         <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-        <script>
-            document.getElementById('marked-result').innerHTML = marked("{{ session('result') }}");
-        </script>
     @endif
+    <script>
+        var data = @json(session('result'));
+        document.getElementById('marked-result').innerHTML = marked.parse(data);
+    </script>
 @endsection
