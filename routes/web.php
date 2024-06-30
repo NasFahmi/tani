@@ -22,4 +22,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/cek-kesehatan/hasil', [CekKesehatanController::class, 'hasil'])->name('cek-kesehatan.hasil')->middleware('isSubmitPhoto');
 
     Route::get('/profile', [UserController::class, 'index'])->name('profile.index');
+
+    Route::get('/logout',[AuthenticationController::class,'logout'])->name('logout');
 });
