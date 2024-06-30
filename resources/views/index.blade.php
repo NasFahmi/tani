@@ -9,7 +9,7 @@
     </div>
     <hr class="mb-6 border-gray-300">
     <div class="flex flex-col items-center justify-between ">
-        <div class="w-full overflow-y-auto h-lvh ">
+        <div class="w-full overflow-y-auto h-dvh ">
             <!-- Card 1 -->
             <a href="{{ route('cek-kesehatan.index') }}" class="flex items-center p-4 mb-6 bg-white shadow-md rounded-xl">
                 <div class="flex items-center justify-center w-16 h-auto mr-4 overflow-hidden rounded-full bg-white-300">

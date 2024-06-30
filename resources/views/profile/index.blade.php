@@ -20,7 +20,7 @@
         </div>
 
     </div>
-    <div class="relative flex flex-col items-center justify-start p-10 mt-20 bg-white h-lvh rounded-t-3xl">
+    <div class="relative flex flex-col items-center justify-start p-10 mt-20 bg-white h-dvh rounded-t-3xl">
         <!-- Logo in the center -->
         <div class="absolute flex items-center justify-center w-20 h-20 mb-4 bg-white rounded-full top-[-40px]">
             <img src="{{ asset('asset/icon/image_logo.png') }}" alt="Logo"

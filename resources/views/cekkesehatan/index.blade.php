@@ -27,7 +27,7 @@
         </div>
 
     </div>
-    <div class="relative flex flex-col items-center justify-center h-lvh">
+    <div class="relative flex flex-col items-center justify-center h-dvh">
         <video id="video" class="w-full h-auto max-w-xs bg-black rounded" autoplay></video>
         <button id="snap" class="absolute px-4 py-2 text-white bg-blue-500 rounded-full bottom-20">Take Photo</button>
         <canvas id="canvas" class="hidden max-w-xs mt-4 rounded"></canvas>
@@ -56,7 +56,11 @@
 
         // Akses kamera
         navigator.mediaDevices.getUserMedia({
-                video: true
+                video: {
+                    facingMode: {
+                        ideal: "environment"
+                    }
+                }
             })
             .then(stream => {
                 video.srcObject = stream;
@@ -100,4 +104,5 @@
             }
         });
     </script>
+
 @endsection
