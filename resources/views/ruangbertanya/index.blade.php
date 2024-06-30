@@ -31,22 +31,22 @@
         <hr class="mb-4 border-gray-300">
         <div class="text-center">
             <p class="mb-2 text-lg font-medium text-gray-400 font-poppins">Selamat datang di Ruang Diskusi HamaPetik</p>
-            <p class="mb-4 text-base text-gray-400 font-poppins font-regular">Selasa, 19 Feb 2024</p>
+            <p id="current-time" class="mb-4 text-base text-gray-400 font-poppins font-regular"></p>
         </div>
         <div id="chatbox" class="h-screen p-4 overflow-y-auto">
             <!-- Chat messages will be displayed here -->
             @foreach ($messages as $message)
                 @if ($message->sender == 'user')
                     <div class="mb-2 text-right">
-                        <p
-                            class="inline-block px-4 py-2 text-sm text-white bg-blue-500 rounded-lg max-w-80 message-content">
-                            {{ $message->content }}</p>
+                        <div class="inline-block px-4 py-2 text-sm text-white bg-blue-500 rounded-lg max-w-80 message-content">
+                            {{ $message->content }}
+                        </div>
                     </div>
                 @else
                     <div class="mb-2">
-                        <p
-                            class="inline-block px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded-lg max-w-80 message-content">
-                            {{ $message->content }}</p>
+                        <div class="inline-block px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded-lg max-w-80 message-content">
+                            {{ $message->content }}
+                        </div>
                     </div>
                 @endif
             @endforeach
@@ -70,54 +70,62 @@
         </div>
     </form>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
-        $(document).ready(function() {
-            // Parse existing chat messages
-            $('.message-content').each(function() {
-                const rawContent = $(this).text();
-                const parsedContent = marked.parse(rawContent);
-                $(this).html(parsedContent);
-            });
+        // Update current time
+        function updateTime() {
+            const now = new Date();
+            const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            const formattedTime = now.toLocaleDateString('id-ID', options);
+            document.getElementById('current-time').innerText = formattedTime;
+        }
 
-            // Form submission handler
-            $("#chat-form").submit(function(event) {
-                event.preventDefault();
-                const messageInput = $("#message");
-                const message = messageInput.val();
-                if (message.trim() === "") return;
+        // Initial call to update time
+        updateTime();
+        // Update time every second
+        setInterval(updateTime, 1000);
 
-                messageInput.prop('disabled', true);
-                $("form button").prop('disabled', true);
-                $("#loading-animation").show();
+        // Form submission handler
+        document.getElementById('chat-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const messageInput = document.getElementById('message');
+            const message = messageInput.value;
+            if (message.trim() === "") return;
 
-                $.ajax({
-                    url: '{{ route('ruang-bertanya.chat') }}',
-                    method: "POST",
-                    headers: {
-                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                    },
-                    data: {
-                        "content": message
-                    }
-                }).done(function(res) {
-                    $('#chatbox').append(
-                        '<div class="mb-2 text-right"><p class="inline-block px-4 py-2 text-sm text-white bg-blue-500 rounded-lg max-w-80">' +
-                        marked.parse(message) + '</p></div>');
-                    const formattedResponse = marked.parse(res); // Convert markdown to HTML
-                    $('#chatbox').append(
-                        '<div class="mb-2"><div class="inline-block px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded-lg max-w-80">' +
-                        formattedResponse + '</div></div>');
+            messageInput.disabled = true;
+            document.querySelector("form button").disabled = true;
+            document.getElementById('loading-animation').style.display = 'flex';
 
-                    messageInput.val('');
-                    $(document).scrollTop($(document).height());
-                }).fail(function() {
-                    alert("Terjadi kesalahan. Silakan coba lagi.");
-                }).always(function() {
-                    $("#loading-animation").hide();
-                    messageInput.prop('disabled', false);
-                    $("form button").prop('disabled', false);
-                });
+            $.ajax({
+                url: '{{ route('ruang-bertanya.chat') }}',
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                data: {
+                    "content": message
+                }
+            }).done(function(res) {
+                const chatbox = document.getElementById('chatbox');
+                chatbox.innerHTML += `
+                    <div class="mb-2 text-right">
+                        <div class="inline-block px-4 py-2 text-sm text-white bg-blue-500 rounded-lg max-w-80">
+                            ${message}
+                        </div>
+                    </div>`;
+                chatbox.innerHTML += `
+                    <div class="mb-2">
+                        <div class="inline-block px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded-lg max-w-80">
+                            ${res}
+                        </div>
+                    </div>`;
+                messageInput.value = '';
+                window.scrollTo(0, document.body.scrollHeight);
+            }).fail(function() {
+                alert("Terjadi kesalahan. Silakan coba lagi.");
+            }).always(function() {
+                document.getElementById('loading-animation').style.display = 'none';
+                messageInput.disabled = false;
+                document.querySelector("form button").disabled = false;
             });
         });
     </script>
