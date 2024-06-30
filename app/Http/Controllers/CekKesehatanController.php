@@ -27,12 +27,13 @@ class CekKesehatanController extends Controller
 
         // Simpan foto ke penyimpanan
         $fileName = Str::random(10) . '.jpg';
-        Storage::put('public/photos/' . $fileName, $photoData);
+        Storage::put('public/images/' . $fileName, $photoData);
 
         // Dapatkan URL gambar
-        $filePath = 'public/photos/' . $fileName;
-        $imageUrl = Storage::url($filePath);
+        $filePath = 'public/images/' . $fileName;
+        $imageUrl = url(Storage::url($filePath)); // Ubah menjadi URL lengkap
 
+        // dd($imageUrl);
         // Inisialisasi Guzzle HTTP client
         $client = new Client();
 
