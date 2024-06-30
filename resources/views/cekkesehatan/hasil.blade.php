@@ -34,7 +34,10 @@
             <img src="{{ session('image') }}" alt="Plant" class="object-cover rounded-lg shadow-lg"
                 style="width: 261px; height: 172px;">
         </div>
-        <span class="block mt-4">{{ json_encode(session('result')) }}</span>
-        {{-- <span class="block mt-4">"Gambar tersebut menunjukkan kalkulator desktop berwarna putih dengan tombol abu-abu dan layar LCD hitam. Tombolnya termasuk 0-9, tanda tambah, kurang, kali, bagi, persentase, akar kuadrat, MC, M-, M+, dan tombol sama dengan. Di bagian atas kalkulator terdapat logo \"JOYRO\" berwarna biru. Kalkulator terletak di atas permukaan putih dan sebagian tersembunyi di balik jari manusia.</span> --}}
+        <div id="marked-result" class="mb-4"></div>
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <script>
+            document.getElementById('marked-result').innerHTML = marked("{{ session('result') }}");
+        </script>
     @endif
 @endsection
